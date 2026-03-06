@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Star Bella</string>
+    <string name="title_activity_main">Star Bella</string>
+    <string name="package_name">com.starbella.catalogo</string>
+    <string name="custom_url_scheme">com.starbella.catalogo</string>
+</resources>

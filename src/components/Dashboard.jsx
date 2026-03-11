@@ -66,6 +66,7 @@ export default function Dashboard({ onLogout }) {
     const newAlbum = {
       id: Math.random().toString(36).substr(2, 9),
       title: 'Nova Coleção',
+      price: '', // Novo campo de preço
       tag: '', // none, 'Novidade', 'Promoção', 'Esgotado'
       isVisible: true,
       files: fileArray, // keep reference to actual files for upload
@@ -77,6 +78,10 @@ export default function Dashboard({ onLogout }) {
 
   const updateAlbumTitle = (id, newTitle) => {
     setAlbums((prev) => prev.map(album => album.id === id ? { ...album, title: newTitle } : album));
+  };
+
+  const updateAlbumPrice = (id, newPrice) => {
+    setAlbums((prev) => prev.map(album => album.id === id ? { ...album, price: newPrice } : album));
   };
 
   const updateAlbumTag = (id, newTag) => {
@@ -125,6 +130,16 @@ export default function Dashboard({ onLogout }) {
     }
   };
 
+  const updateSavedAlbumPrice = async (id, newPrice) => {
+    try {
+      await updateDoc(doc(db, "albums", id), { price: newPrice });
+      setSavedAlbums((prev) => prev.map(album => album.id === id ? { ...album, price: newPrice } : album));
+    } catch (e) {
+      console.error("Error updating price:", e);
+      alert("Erro ao atualizar preço");
+    }
+  };
+
   const updateSavedAlbumTag = async (id, newTag) => {
     try {
       await updateDoc(doc(db, "albums", id), { tag: newTag });
@@ -163,6 +178,7 @@ export default function Dashboard({ onLogout }) {
         // 2. Save album metadata to Firestore
         const docRef = await addDoc(collection(db, "albums"), {
           title: album.title,
+          price: album.price || '',
           tag: album.tag,
           isVisible: album.isVisible,
           images: uploadedImageUrls,
@@ -287,14 +303,27 @@ export default function Dashboard({ onLogout }) {
                   </div>
                 )}
 
-                <div style={{ padding: '8px', background: 'var(--bg-card)', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <Edit3 size={16} color="var(--text-muted)" />
-                  <input
-                    type="text"
-                    value={album.title}
-                    onChange={(e) => updateAlbumTitle(album.id, e.target.value)}
-                    style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontWeight: '500', color: 'var(--text-main)' }}
-                  />
+                <div style={{ padding: '8px', background: 'var(--bg-card)', borderTop: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <Edit3 size={16} color="var(--text-muted)" />
+                    <input
+                      type="text"
+                      value={album.title}
+                      placeholder="Título da coleção"
+                      onChange={(e) => updateAlbumTitle(album.id, e.target.value)}
+                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontWeight: '500', color: 'var(--text-main)' }}
+                    />
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: '500', width: '16px', display: 'inline-block', textAlign: 'center' }}>R$</span>
+                    <input
+                      type="text"
+                      value={album.price || ''}
+                      placeholder="Preço (ex: 120,00)"
+                      onChange={(e) => updateAlbumPrice(album.id, e.target.value)}
+                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '0.9rem', color: 'var(--text-main)' }}
+                    />
+                  </div>
                 </div>
                 <div style={{ padding: '8px', background: 'var(--bg-card)', borderTop: '1px solid rgba(0,0,0,0.05)', display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between' }}>
                   <select
@@ -370,14 +399,27 @@ export default function Dashboard({ onLogout }) {
                   </div>
                 )}
 
-                <div style={{ padding: '8px', background: 'var(--bg-card)', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <Edit3 size={16} color="var(--text-muted)" />
-                  <input
-                    type="text"
-                    value={album.title}
-                    onChange={(e) => updateSavedAlbumTitle(album.id, e.target.value)}
-                    style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontWeight: '500', color: 'var(--text-main)' }}
-                  />
+                <div style={{ padding: '8px', background: 'var(--bg-card)', borderTop: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <Edit3 size={16} color="var(--text-muted)" />
+                    <input
+                      type="text"
+                      value={album.title}
+                      placeholder="Título da coleção"
+                      onChange={(e) => updateSavedAlbumTitle(album.id, e.target.value)}
+                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontWeight: '500', color: 'var(--text-main)' }}
+                    />
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: '500', width: '16px', display: 'inline-block', textAlign: 'center' }}>R$</span>
+                    <input
+                      type="text"
+                      value={album.price || ''}
+                      placeholder="Preço (ex: 120,00)"
+                      onChange={(e) => updateSavedAlbumPrice(album.id, e.target.value)}
+                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '0.9rem', color: 'var(--text-main)' }}
+                    />
+                  </div>
                 </div>
 
                 <div style={{ padding: '8px', background: 'var(--bg-card)', borderTop: '1px solid rgba(0,0,0,0.05)', display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between' }}>

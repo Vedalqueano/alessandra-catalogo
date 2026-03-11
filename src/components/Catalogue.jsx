@@ -190,7 +190,7 @@ export default function Catalogue() {
                                     e.currentTarget.style.boxShadow = '0 8px 32px 0 rgba(0, 0, 0, 0.3)';
                                 }}
                             >
-                                <div style={{ position: 'relative', paddingTop: '125%' /* 4:5 ratio like IG */ }}>
+                                <div className="card-image-container">
                                     <CollectionCoverSlider images={album.images} title={album.title} />
 
                                     {/* Multiple images indicator */}
@@ -207,40 +207,44 @@ export default function Catalogue() {
                                         </div>
                                     )}
 
-                                    <div style={{
+                                    <div className="card-content" style={{
                                         position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                                        background: 'linear-gradient(to top, rgba(15,15,17,0.9) 0%, transparent 50%)',
+                                        background: 'linear-gradient(to top, rgba(15,15,17,0.9) 0%, transparent 60%)',
                                         display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-                                        padding: '1.5rem', zIndex: 4
+                                        zIndex: 4
                                     }}>
-                                        <div style={{ display: 'flex', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
-                                            <span style={{
+                                        <div className="card-tags-container" style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                            <span className="card-tag" style={{
                                                 background: 'var(--accent-gold)', color: '#000',
-                                                padding: '4px 12px', borderRadius: '20px',
-                                                fontSize: '0.8rem', fontWeight: 'bold'
+                                                borderRadius: '20px', fontWeight: 'bold'
                                             }}>
                                                 Coleção
                                             </span>
                                             {album.tag && (
-                                                <span style={{
+                                                <span className="card-tag" style={{
                                                     background: album.tag === 'Promoção' ? '#ef4444' : album.tag === 'Novidade' ? '#10b981' : '#6b7280',
                                                     color: '#fff',
-                                                    padding: '4px 12px', borderRadius: '20px',
-                                                    fontSize: '0.8rem', fontWeight: 'bold'
+                                                    borderRadius: '20px', fontWeight: 'bold'
                                                 }}>
                                                     {album.tag}
                                                 </span>
                                             )}
                                         </div>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <h3 style={{ fontSize: '1.2rem', fontWeight: '500', color: 'white' }}>{album.title}</h3>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '4px' }}>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1, minWidth: 0 }}>
+                                                <h3 className="card-title" style={{ fontWeight: '500', color: 'white', margin: 0 }}>{album.title}</h3>
+                                                {album.price && (
+                                                    <span className="card-price" style={{ fontWeight: 'bold', color: 'var(--accent-gold)' }}>R$ {album.price}</span>
+                                                )}
+                                            </div>
                                             <button
+                                                className="card-action-btn"
                                                 onClick={(e) => { e.stopPropagation(); handleWhatsApp(); }}
                                                 style={{
                                                     background: 'rgba(255,255,255,0.2)', border: 'none',
-                                                    color: 'white', padding: '8px', borderRadius: '50%',
+                                                    color: 'white', borderRadius: '50%',
                                                     cursor: 'pointer', backdropFilter: 'blur(4px)',
-                                                    transition: 'background 0.2s'
+                                                    transition: 'background 0.2s', flexShrink: 0
                                                 }}
                                                 onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-gold)'}
                                                 onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
@@ -272,6 +276,17 @@ export default function Catalogue() {
                             display: 'flex', alignItems: 'center', justifyContent: 'center'
                         }}
                     >
+                        {/* Title and Price Info */}
+                        <div style={{
+                            position: 'absolute', top: '20px', left: '20px',
+                            zIndex: 10001, textShadow: '0 2px 4px rgba(0,0,0,0.8)'
+                        }}>
+                            <h2 style={{ color: 'white', fontSize: '1.5rem', margin: 0 }}>{selectedAlbum.title}</h2>
+                            {selectedAlbum.price && (
+                                <p style={{ color: 'var(--accent-gold)', fontSize: '1.2rem', fontWeight: 'bold', margin: '4px 0 0 0' }}>R$ {selectedAlbum.price}</p>
+                            )}
+                        </div>
+
                         {/* Close Button */}
                         <button
                             onClick={closeLightbox}

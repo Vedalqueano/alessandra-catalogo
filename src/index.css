@@ -150,6 +150,9 @@ body {
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
+  body {
+    padding-top: max(env(safe-area-inset-top), 40px);
+  }
 
   /* Bigger hero on mobile */
   .hero-container {
@@ -184,8 +187,8 @@ body {
   /* Full-width Catalogue Grid, 2 columns */
   .catalogue-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.75rem !important;
-    padding: 0 0.75rem !important;
+    gap: 0.5rem !important; /* Reduced from 0.75rem to max image size */
+    padding: 0 0.5rem !important; /* Reduced from 0.75rem */
   }
 
   /* Dashboard Admin paddings */
@@ -194,15 +197,7 @@ body {
   }
 }
 
-@media (max-width: 480px) {
-
-  /* Single column for very small screens */
-  .catalogue-grid {
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
-    padding: 0 0.75rem !important;
-  }
-}
+/* Removes the 480px media query to keep the 2 columns */
 
 /* Lightbox Mobile Enhancements */
 @media (max-width: 768px) {
@@ -231,5 +226,79 @@ body {
 @media (max-width: 768px) {
   .parallax-plant {
     display: none !important;
+  }
+}
+
+/* Card Responsive Utilities */
+.card-image-container {
+  position: relative;
+  padding-top: 125%;
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+.card-tags-container {
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.card-tag {
+  padding: 4px 12px;
+  font-size: 0.8rem;
+}
+
+.card-title {
+  font-size: 1.2rem;
+}
+
+.card-price {
+  font-size: 1.05rem;
+}
+
+.card-action-btn {
+  padding: 8px;
+}
+
+@media (max-width: 768px) {
+  .card-image-container {
+    padding-top: 165%; /* Taller on mobile for better visibility (was 145%) */
+  }
+
+  .card-content {
+    padding: 0.75rem; 
+  }
+
+  .card-tags-container {
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .card-tag {
+    padding: 2px 6px;
+    font-size: 0.65rem;
+  }
+
+  .card-title {
+    font-size: 0.95rem;
+    word-break: break-word;
+    white-space: normal;
+    line-height: 1.15;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8); /* Better contrast against image */
+  }
+
+  .card-price {
+    font-size: 0.9rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  }
+
+  .card-action-btn {
+    padding: 6px;
+  }
+
+  .card-action-btn svg {
+    width: 16px;
+    height: 16px;
   }
 }

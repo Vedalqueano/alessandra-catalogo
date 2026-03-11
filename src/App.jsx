@@ -34,7 +34,13 @@ function App() {
 
       {/* Floating Toggle */}
       <div style={{
-        position: 'fixed', top: '20px', right: '20px', zIndex: 1000,
+        position: 'fixed',
+        top: isAdmin ? 'auto' : 'calc(15px + env(safe-area-inset-top, 40px))',
+        bottom: isAdmin ? '20px' : 'auto',
+        left: isAdmin ? '50%' : 'auto',
+        right: isAdmin ? 'auto' : '15px',
+        transform: isAdmin ? 'translateX(-50%)' : 'none',
+        zIndex: 1000,
         display: 'flex', gap: '10px'
       }}>
         <button
@@ -55,7 +61,7 @@ function App() {
             borderRadius: isAdmin ? '20px' : '50%',
             border: isAdmin ? '1px solid var(--border-color)' : 'none',
             color: isAdmin ? 'white' : 'var(--text-muted)',
-            background: isAdmin ? '#1a1a1a' : 'transparent',
+            background: isAdmin ? 'var(--text-main)' : 'transparent',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
